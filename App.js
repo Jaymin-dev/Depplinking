@@ -6,111 +6,97 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React, {useState} from 'react';
+import ImagePicker from 'react-native-image-crop-picker';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
+  Image,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [image, setIamge] = useState();
+  const pickSingleWithCamera = (mediaType = 'photo') => {
+    ImagePicker.openCamera({
+      cropping: true,
+      width: 500,
+      height: 500,
+      includeExif: true,
+      mediaType,
+    })
+      .then(image => {
+        console.log('received image', image);
+        setIamge({
+          image: {
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            mime: image.mime,
+          },
+          images: null,
+        });
+      })
+      .catch(e => alert(e));
+  };
+
+  const pickSingleBase64 = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+    })
+      .then(image => {
+        console.log('received base64 image', image);
+        setIamge(image.sourceURL);
+      })
+      .catch(e => alert(e));
+  };
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.container}>
+      <Image style={styles.image} source={{uri: image}} />
+      <TouchableOpacity
+        onPress={pickSingleBase64}
+        style={styles.sectionContainer}>
+        <Text style={styles.text}>Gallery</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={pickSingleWithCamera}
+        style={styles.sectionContainer}>
+        <Text style={styles.text}>Capture</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
+  image: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+  },
+  sectionContainer: {
+    backgroundColor: 'blue',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  text: {
     fontSize: 24,
     fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    color: 'white',
   },
 });
 
