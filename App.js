@@ -33,15 +33,7 @@ const App = () => {
     })
       .then(image => {
         console.log('received image', image);
-        setIamge({
-          image: {
-            uri: image.path,
-            width: image.width,
-            height: image.height,
-            mime: image.mime,
-          },
-          images: null,
-        });
+        setIamge(image.sourceURL);
       })
       .catch(e => alert(e));
   };
@@ -54,7 +46,7 @@ const App = () => {
     })
       .then(image => {
         console.log('received base64 image', image);
-        setIamge(image.sourceURL);
+        setIamge(image.path);
       })
       .catch(e => alert(e));
   };
