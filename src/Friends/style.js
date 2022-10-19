@@ -28,6 +28,10 @@ const style = StyleSheet.create({
     backgroundColor: 'red',
   },
   text: {fontSize: 15, fontWeight: '400'},
+  button: {
+    backgroundColor: 'blue',
+    padding: 10,
+  },
 });
 
 export default style;
