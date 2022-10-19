@@ -8,6 +8,7 @@ import {brandColors} from './Core/basicStyles';
 import Home from './Home';
 import Setting from './Setting';
 import Friends from './Friends';
+import FriendsDetail from './FriendsDetail';
 
 const Stack = createStackNavigator();
 const AppBottomTab = createBottomTabNavigator();
@@ -41,6 +42,7 @@ const RootNavigator = () => {
               gestureEnabled: false,
             }}>
             <Stack.Screen name="TabScreen" component={AppTabScreen} />
+            <Stack.Screen name="FriendsDetail" component={FriendsDetail} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

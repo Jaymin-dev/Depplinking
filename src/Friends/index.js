@@ -57,6 +57,9 @@ const Friends = ({navigation}) => {
     );
     setData(filterArray);
   };
+  const navigateHandler = (item = {}) => {
+    navigation.navigate('FriendsDetail', {item: item.Id});
+  };
   return (
     <View style={{marginHorizontal: 20}}>
       <Button title="ADD" onPress={onADD} />
@@ -95,11 +98,14 @@ const Friends = ({navigation}) => {
         keyExtractor={(d, i) => i}
         renderItem={({item, i}) => {
           return (
-            <View key={i} style={style.wrapper}>
+            <TouchableOpacity
+              onPress={() => navigateHandler(item)}
+              key={i}
+              style={style.wrapper}>
               <Text style={style.text}>First Name:{item.First_Name__c}</Text>
               <Text style={style.text}>Last Name:{item.Last_Name__c}</Text>
               <Text style={style.text}>Age:{item.Age__c}</Text>
-            </View>
+            </TouchableOpacity>
           );
         }}
       />

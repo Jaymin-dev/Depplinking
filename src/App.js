@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './redux/store';
-import {StatusBar} from 'react-native';
+import {Linking, StatusBar} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import RootNavigator from './SwitchNavigator';
 
-const App = () => {
+const App = ({navigation}) => {
+  
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
